@@ -1,0 +1,45 @@
+{% extends "globalNews/layout.html" %}
+{% load static %}
+
+{% block title %} Register {% endblock %}
+
+{% block body %}
+
+<div class="signin--BLOCK">
+    <div class="signin--CONTENT">
+        <form action="{% url 'register' %}" method="post" class="signin--FORM">
+            {% csrf_token %}
+            <div class="signin_form--CONTENT">
+                <h2 class="xlarge__FONTSIZE">register</h2>
+
+                {% if message %}
+                    <div class="signin_message--BLOCK">
+                        <span class="mid__FONTSIZE">{{ message }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="form_inputs--CONTAINER">
+                    <div class="form_input--CONTAINER">
+                        <label class="mid__FONTSIZE" for="email">email</label>
+                        <input type="email" name="email" class="mid-large__FONTSIZE" id="email" required>
+                    </div>
+                    <div class="form_input--CONTAINER">
+                        <label class="mid__FONTSIZE" for="username">username</label>
+                        <input type="text" name="username" class="mid-large__FONTSIZE" id="username" required>
+                    </div>
+                    <div class="form_input--CONTAINER">
+                        <label class="mid__FONTSIZE" for="password">password</label>
+                        <input type="password" name="password" class="mid-large__FONTSIZE" id="password" required>
+                    </div>
+                    <div class="form_input--CONTAINER">
+                        <label class="mid__FONTSIZE" for="confirmation">password confirmation</label>
+                        <input type="password" name="confirmation" class="mid-large__FONTSIZE" id="confirmation" required>
+                    </div>
+                    <button class="signup_submit--BTN mid__FONTSIZE" type="submit">register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "globalNews/layout.html" %}
+{% load static %}
+
+{% block title %} Login {% endblock %}
+
+{% block body %}
+
+<iv class="signin--BLOCK">
+    <div class="signin--CONTENT">
+        <form action="{% url 'login' %}" method="post" class="signin--FORM">
+            {% csrf_token %}
+            <div class="signin_form--CONTENT">
+                <h2 class="xlarge__FONTSIZE">Login</h2>
+
+                {% if message %}
+                    <div class="signin_message--BLOCK">
+                        <span class="mid__FONTSIZE">{{ message }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="form_inputs--CONTAINER">
+                    <div class="form_input--CONTAINER">
+                        <label class="mid__FONTSIZE" for="username">username</label>
+                        <input type="text" name="username" class="mid-large__FONTSIZE id="username" required>
+                    </div>
+                    <div class="form_input--CONTAINER">
+                        <label class="mid__FONTSIZE" for="password">password</label>
+                        <input type="password" name="password" class="mid-large__FONTSIZE" id="password" required>
+                    </div>
+                    <button class="signup_submit--BTN mid__FONTSIZE" type="submit">Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

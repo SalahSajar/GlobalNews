@@ -1,0 +1,218 @@
+{% load static %} {% load sass_tags %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="shortcut icon"
+      href="{% static 'globalNews/assets/favicon.ico' %}"
+    />
+
+    <link
+      href="{% sass_src 'globalNews/scss/style.scss' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <title>{% block title %}World News{% endblock %}</title>
+  </head>
+  <body>
+    <header class="main--HEADER">
+      <div class="main_header--UPPERBLOCK">
+        <h1>
+          <a href="{% url 'index' %}">
+            <img
+              src="{% static 'globalNews/assets/logo.png' %}"
+              aria-label="Logo"
+              alt="global news"
+            />
+          </a>
+        </h1>
+
+        <div class="main_header_search--BLOCK">
+          <form action="{% url 'search' %}" method="get">
+            <button class="submit_header_search_form--BTN" type="submit">
+              <img
+                src="{% static 'globalNews/assets/icons/search.png' %}"
+                alt="search"
+              />
+            </button>
+            <div class="main_header_search_input--CONTAINER">
+              <input
+                type="text"
+                name="q"
+                id="q"
+                class="mid__FONTSIZE"
+                placeholder="Search for topics, Locations, Sources"
+                required
+              />
+            </div>
+          </form>
+        </div>
+
+        <div class="user_auth_ctas--CONTAINER">
+          {% if request.user.is_authenticated %}
+            <div class="loggedIn_user_links--BLOCK">
+              <div class="loggedIn_user_links--CONTENT">
+            
+                <button class="loggedIn_user_profile--BTN">
+                  <div class="loggedIn_user_profile_image--CONTAINER">
+                    {% if request.user.profile_pic %}
+                      <img src="data:image/jpeg;base64,{{ request.user.profile_pic }}">
+                    {% else %}
+                      <img src="{% static 'globalNews/assets/icons/default_user_profile_pic [ BIG ].png"
+                        srcset="{% static 'globalNews/assets/icons/default_user_profile_pic [ SMALL ].png' %} 480w, {% static 'globalNews/assets/icons/default_user_profile_pic [ BIG ].png' %} 800w"
+                        sizes="(max-width: 600px) 480px,800px" alt="default user profile pic">
+                    {% endif %}
+                  </div>
+                </button>
+            
+                <div data-visible="false" class="loggedIn_user_links--DROPDOWN">
+                  <div class="loggedIn_user_links_dropdown--CONTENT">
+                    <ul class="loggedIn_user_links--CONTAINER">
+                      <li class="username_list--ITEM">
+                        <span class="mid-large__FONTSIZE">Welcome, <b>{{request.user.username}}</b></span>
+                      </li>
+                      <li>
+                        <a class="loggedIn_user_link--EL mid__FONTSIZE" href="{% url 'savedArticles' %}">saved articles</a>
+                      </li>
+                      <li>
+                        <a class="loggedIn_user_link--EL mid__FONTSIZE" href="{% url 'settings' %}">settings</a>
+                      </li>
+                      <li>
+                        <a class="loggedIn_user_link--EL mid__FONTSIZE" href="{% url 'logout' %}">logout</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <a
+              class="user_auth--CTA mid__FONTSIZE user_login--CTA"
+              href="{% url 'login' %}"
+              >Login</a
+            >
+            <a
+              class="user_auth--CTA mid__FONTSIZE user_register--CTA"
+              href="{% url 'register' %}"
+              >Register</a
+            >
+          {% endif %}
+        </div>
+      </div>
+      <nav class="main_header--NAVIGATION">
+        <ul>
+          <li>
+            <a href="{% url 'index' %}" class="mid__FONTSIZE">Home</a>
+          </li>
+
+          {% if request.user.is_authenticated %}
+          <li>
+            <a href="{% url 'following' %}" class="mid__FONTSIZE">following</a>
+          </li>
+          {% endif %}
+
+          <li class="navigations_breakline"></li>
+
+          <li>
+            <a href="{% url 'topic' 'world' %}" class="mid__FONTSIZE">World</a>
+          </li>
+          <li>
+            <a href="{% url 'local' %}" class="mid__FONTSIZE">Local</a>
+          </li>
+          <li>
+            <a href="{% url 'topic' 'business' %}" class="mid__FONTSIZE">business</a>
+          </li>
+          <li>
+            <a href="{% url 'topic' 'technology' %}" class="mid__FONTSIZE">technology</a>
+          </li>
+          <li>
+            <a href="{% url 'topic' 'entertainment' %}" class="mid__FONTSIZE">entertainment</a>
+          </li>
+          <li>
+            <a href="{% url 'topic' 'sports' %}" class="mid__FONTSIZE">sports</a>
+          </li>
+          <li>
+            <a href="{% url 'topic' 'science' %}" class="mid__FONTSIZE">science</a>
+          </li>
+          <li>
+            <a href="{% url 'topic' 'health' %}" class="mid__FONTSIZE">health</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>{% block body %} {% endblock %}</main>
+
+    <div data-visible="false" class="share_overlay--BLOCK">
+      <div class="share_overlay--CONTENT">
+        <div class="share_links--BLOCK">
+          <div class="share_links--CONTENT">
+            <div class="close_share_overlay_btn--CONTAINER">
+              <button type="button" class="close_share_overlay--BTN">
+                <span class="close_share_overlay_icon--CONTAINER">
+                  <img src="{% static 'globalNews/assets/icons/close.png' %}" alt="">
+                </span>
+              </button>
+            </div>
+            <div class="sharing_target--HEADER">
+              <span class="mid__FONTSIZE article_source--EL">BBC</span>
+              <h6 class="large__FONTSIZE">news article title news article title -- BBC</h6>
+            </div>
+            <hr>
+            <div class="share_links--CONTAINER">
+              <div class="share_links_container--CONTENT">
+                <button class="share_link--BTN copy_url--BTN">
+                  <div class="share_link_btn--CONTENT">
+                    <picture class="share_link_btn_icon--CONTAINER">
+                      <source media="(max-width:650px)" srcset="{% static 'globalNews/assets/icons/Link Icon Sizes/link [ SMALL ].png' %}">
+                      <source media="(min-width:1200px)" srcset="{% static 'globalNews/assets/icons/Link Icon Sizes/link [ BIG ].png' %}">
+                      <img src="{% static 'globalNews/assets/icons/Link Icon Sizes/link [ MID ].png' %}" alt="copy link">
+                    </picture>
+                    <span class="share_link_btn--TITLE mid__FONTSIZE">copy link</span>
+                  </div>
+                </button>
+
+                <button class="share_link--BTN  share_in_facebook--BTN">
+                  <div class="share_link_btn--CONTENT">
+                    <span class="share_link_btn_icon--CONTAINER">
+                      <img src="{% static 'globalNews/assets/icons/circled-facebook.png' %}" alt="copy link">
+                    </span>
+                    <span class="share_link_btn--TITLE mid__FONTSIZE">facebook</span>
+                  </div>
+                </button>
+
+                <button class="share_link--BTN share_in_twitter--BTN">
+                  <div class="share_link_btn--CONTENT">
+                    <span class="share_link_btn_icon--CONTAINER">
+                      <img src="{% static 'globalNews/assets/icons/circled-twitter.png' %}" alt="copy link">
+                    </span>
+                    <span class="share_link_btn--TITLE mid__FONTSIZE">twitter</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer--CONTENT">
+        <small class="globalNews_copyright--EL mid__FONTSIZE">
+          <em>Copyright © 2023 GlobalNews.</em> The GlobalNews is not
+          responsible for the content of external sites.
+        </small>
+      </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js" integrity="sha512-/n/dTQBO8lHzqqgAQvy0ukBQ0qLmGzxKhn8xKrz4cn7XJkZzy+fAtzjnOQd5w55h4k1kUC+8oIe6WmrGUYwODA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'globalNews/js/main.js' %}"></script>
+  </body>
+</html>

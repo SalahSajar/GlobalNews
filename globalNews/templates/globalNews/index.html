@@ -1,0 +1,922 @@
+{% extends "globalNews/layout.html" %}
+
+{% load static %}
+{% load split %}
+
+
+{% block body %}
+    <div class="indexPage--SECTIONSCONTAINER">
+        <section class="indexPage_Topnews--SECTION">
+            <div class="Topnews--CONTENT">
+                {% if news_articles_by_category.general %}
+                    {% for newsArticle in news_articles_by_category.general %}
+                        {% with newsArticle.title|split:" - "|slice:"-1"|join:" " as title %}
+                            <article class="news--CARD">
+                                <a class="news--LINK" target="_blank" href="{{newsArticle.url}}">
+                                    <div class="news_image--CONTANER">
+                                        {% if newsArticle.urlToImage %}
+                                            <img src="{{ newsArticle.urlToImage }}" alt="{{newsArticle.title}}">
+                                        {% else %}
+                                            <img src="{% static 'globalNews/assets/background/default_news_thumbnail 2.png' %}" alt="news news">
+                                        {% endif %}
+                                    </div>
+                                    <section class="news_content--WRAPPER">
+                                        <h2 title="{{newsArticle.title}}"
+                                            class="{% if forloop.counter0 == 0 %} mid-large__FONTSIZE {% else %} mid__FONTSIZE {% endif %}">
+                                            {% if article_title %}
+                                                {{ title }}
+                                            {% else %}
+                                                {{ newsArticle.title }}
+                                            {% endif %}
+                                        </h2>
+                                        <p class="{% if forloop.counter0 == 0 %} mid__FONTSIZE {% else %} small-mid__FONTSIZE {% endif %}">{{newsArticle.description|truncatechars:120}}</p>
+                                        <div class="news_card--FOOTER">
+                                            <div class="news_card_releaseTime--BLOCK">
+                                                <span class="news_card_releaseTime_icon--WRAPPER">
+                                                    <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                                </span>
+                                                <span class="news_card_releaseTime--EL small-mid__FONTSIZE">{{newsArticle.sincePublishTime}}</span>
+                                            </div>
+                                            <span class="news_origin--EL small-mid__FONTSIZE">{{ newsArticle.source.name }}</span>
+                                        </div>
+                                    </section>
+                                </a>
+                            </article>
+                        {% endwith %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- <section class="indexPage_Topnews--SECTION">
+            <div class="Topnews--CONTENT">
+                <article class="news--CARD">
+                    <a class="news--LINK" taget="_self" href="/">
+                        <div class="news_image--CONTANER">
+                            <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of T">
+                        </div>
+                        <section class="news_content--WRAPPER">
+                            <h2 title="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon"
+                                class="mid-large__FONTSIZE">
+                                Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon
+                            </h2>
+                            <p class="mid__FONTSIZE">Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon</p>
+                            <div class="news_card--FOOTER">
+                                <div class="news_card_releaseTime--BLOCK">
+                                    <span class="news_card_releaseTime_icon--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_releaseTime--EL small-mid__FONTSIZE">1 Hour</span>
+                                </div>
+                                <span class="news_origin--EL small-mid__FONTSIZE">BBC</span>
+                            </div>
+                        </section>
+                    </a>
+                </article>
+                <article class="news--CARD">
+                    <a class="news--LINK" taget="_self" href="/">
+                        <div class="news_image--CONTANER">
+                            <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of T">
+                        </div>
+                        <section class="news_content--WRAPPER">
+                            <h2 title="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon"
+                                class="mid__FONTSIZE">
+                                Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon
+                            </h2>
+                            <p class="small-mid__FONTSIZE">Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon</p>
+                            <div class="news_card--FOOTER">
+                                <div class="news_card_releaseTime--BLOCK">
+                                    <span class="news_card_releaseTime_icon--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_releaseTime--EL small-mid__FONTSIZE">1 Hour</span>
+                                </div>
+                                <span class="news_origin--EL small-mid__FONTSIZE">BBC</span>
+                            </div>
+                        </section>
+                    </a>
+                </article>
+                <article class="news--CARD">
+                    <a class="news--LINK" taget="_self" href="/">
+                        <div class="news_image--CONTANER">
+                            <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of T">
+                        </div>
+                        <section class="news_content--WRAPPER">
+                            <h2 title="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon"
+                                class="mid__FONTSIZE">
+                                Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon
+                            </h2>
+                            <p class="small-mid__FONTSIZE">Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon</p>
+                            <div class="news_card--FOOTER">
+                                <div class="news_card_releaseTime--BLOCK">
+                                    <span class="news_card_releaseTime_icon--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_releaseTime--EL small-mid__FONTSIZE">1 Hour</span>
+                                </div>
+                                <span class="news_origin--EL small-mid__FONTSIZE">BBC</span>
+                            </div>
+                        </section>
+                    </a>
+                </article>
+                <article class="news--CARD">
+                    <a class="news--LINK" taget="_self" href="/">
+                        <div class="news_image--CONTANER">
+                            <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of T">
+                        </div>
+                        <section class="news_content--WRAPPER">
+                            <h2 title="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon"
+                                class="mid__FONTSIZE">
+                                Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon
+                            </h2>
+                            <p class="small-mid__FONTSIZE">Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon</p>
+                            <div class="news_card--FOOTER">
+                                <div class="news_card_releaseTime--BLOCK">
+                                    <span class="news_card_releaseTime_icon--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_releaseTime--EL small-mid__FONTSIZE">1 Hour</span>
+                                </div>
+                                <span class="news_origin--EL small-mid__FONTSIZE">BBC</span>
+                            </div>
+                        </section>
+                    </a>
+                </article>
+                <article class="news--CARD">
+                    <a class="news--LINK" taget="_self" href="/">
+                        <div class="news_image--CONTANER">
+                            <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of T">
+                        </div>
+                        <section class="news_content--WRAPPER">
+                            <h2 title="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon"
+                                class="mid__FONTSIZE">
+                                Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon
+                            </h2>
+                            <p class="small-mid__FONTSIZE">Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon</p>
+                            <div class="news_card--FOOTER">
+                                <div class="news_card_releaseTime--BLOCK">
+                                    <span class="news_card_releaseTime_icon--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_releaseTime--EL small-mid__FONTSIZE">1 Hour</span>
+                                </div>
+                                <span class="news_origin--EL small-mid__FONTSIZE">BBC</span>
+                            </div>
+                        </section>
+                    </a>
+                </article>
+                <article class="news--CARD">
+                    <a class="news--LINK" taget="_self" href="/">
+                        <div class="news_image--CONTANER">
+                            <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of T">
+                        </div>
+                        <section class="news_content--WRAPPER">
+                            <h2 title="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon"
+                                class="mid__FONTSIZE">
+                                Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon
+                            </h2>
+                            <p class="small-mid__FONTSIZE">Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon</p>
+                            <div class="news_card--FOOTER">
+                                <div class="news_card_releaseTime--BLOCK">
+                                    <span class="news_card_releaseTime_icon--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_releaseTime--EL small-mid__FONTSIZE">1 Hour</span>
+                                </div>
+                                <span class="news_origin--EL small-mid__FONTSIZE">BBC</span>
+                            </div>
+                        </section>
+                    </a>
+                </article>
+                <article class="news--CARD">
+                    <a class="news--LINK" taget="_self" href="/">
+                        <div class="news_image--CONTANER">
+                            <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of T">
+                        </div>
+                        <section class="news_content--WRAPPER">
+                            <h2 title="Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon"
+                                class="mid__FONTSIZE">
+                                Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon
+                            </h2>
+                            <p class="small-mid__FONTSIZE">Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon Lord Of The Rings: What Is An Istar? And Why Was Cut Daring Targaryen Book Character In House Of The Dragon</p>
+                            <div class="news_card--FOOTER">
+                                <div class="news_card_releaseTime--BLOCK">
+                                    <span class="news_card_releaseTime_icon--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_releaseTime--EL small-mid__FONTSIZE">1 Hour</span>
+                                </div>
+                                <span class="news_origin--EL small-mid__FONTSIZE">BBC</span>
+                            </div>
+                        </section>
+                    </a>
+                </article>
+            </div>
+        </section> -->
+
+        {% if news_articles_by_category.categories %}
+            <article class="news_by_categories--SECTIONSCONTAINER">
+                <header class="news_by_categories--HEADER">
+                    <h2 class="xlarge__FONTSIZE">General Topics</h2>
+                </header>
+
+                {% for news_articles_category__DATA in news_articles_by_category.categories %}
+                    {% if news_articles_category__DATA %}
+                        <section class="news_category--SECTION">
+                            <header class="news_category--HEADER">
+                                <h3 class="large__FONTSIZE">{{news_articles_category__DATA.topic}}</h3>
+                                <hr>
+                            </header>
+                        
+                            <div class="news--CONTANER">
+                                <div class="news--CONTENT">
+                                    {% for news_category_article in news_articles_category__DATA.results.results|slice:':4' %}
+                                        <article class="news--CARD">
+                                            <a target='_blank' href="{{news_category_article.link}}" class="news_card--CONTENT">
+                                                <div class="news_card_infos--CONTAINER">
+                                                    <div class="news_card--LEFTSIDE">
+                                                        <span class="small-mid__FONTSIZE news_article_source--EL">{{ news_category_article.source_id }}</span></span>
+                                                        <h4 class="mid-large__FONTSIZE">{{ news_category_article.title }}</h4>
+                                                    </div>
+                            
+                                                    <figure class="news_image--CONTAINER">
+                                                        {% if news_category_article.image_url %}
+                                                            <img src="{{news_category_article.image_url}}" alt="news_category_article.title">
+                                                        {% else %}
+                                                            <img src="{% static 'globalNews/assets/background/default_news_thumbnail 2.png' %}"
+                                                                alt="search result article's thumbnail is not available ">
+                                                        {% endif %}
+                                                    </figure>
+                                                </div>
+                            
+                                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                                    </span>
+                                                    <span class="news_card_sincePublishmentTime--EL small-mid__FONTSIZE">{{ news_category_article.sincePublishTime}}</span>
+                                                </div>
+                                            </a>
+                                        </article>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </section>
+                    {% endif %}
+                {% endfor %}
+            </article>
+        {% endif %}
+
+        <!-- <article class="news_by_categories--SECTIONSCONTAINER">
+            <header class="news_by_categories--HEADER">
+                <h2 class="xlarge__FONTSIZE">General Topics</h2>
+            </header>
+
+            <section class="news_category--SECTION">
+                <header class="news_category--HEADER">
+                    <h3 class="large__FONTSIZE">Sport</h3>
+                    <hr>
+                </header>
+            
+                <div class="news--CONTANER">
+                    <div class="news--CONTENT">
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <section class="news_category--SECTION">
+                <header class="news_category--HEADER">
+                    <h3 class="large__FONTSIZE">Sport</h3>
+                    <hr>
+                </header>
+            
+                <div class="news--CONTANER">
+                    <div class="news--CONTENT">
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <section class="news_category--SECTION">
+                <header class="news_category--HEADER">
+                    <h3 class="large__FONTSIZE">Sport</h3>
+                    <hr>
+                </header>
+            
+                <div class="news--CONTANER">
+                    <div class="news--CONTENT">
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                        <article class="news--CARD">
+                            <a href="/" class="news_card--CONTENT">
+                                <div class="news_card_infos--CONTAINER">
+                                    <div class="news_card--LEFTSIDE">
+                                        <span class="mid__FONTSIZE news_article_source--EL">BBC</span></span>
+                                        <h4 class="mid-large__FONTSIZE">title ti tlet itlet itle title title ti tlet itlet</h4>
+                                    </div>
+            
+                                    <figure class="news_image--CONTAINER">
+                                        <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285" alt="news_category_article title">
+                                    </figure>
+                                </div>
+            
+                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                    </span>
+                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE"> 1 Hour</span>
+                                </div>
+                            </a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </article> -->
+
+        {% if random3FollowedTopics %}
+            <section class="user_topics--SECTION">
+                <input type="hidden" name="currentUser_random3Topics" value="{{random3FollowedTopics}}"
+                    id="currentUser_random3Topics">
+                <div class="user_topics--CONTENT">
+                    <header class="user_topics--HEADER">
+                        <h2 class="xlarge__FONTSIZE">Your Topics</h2>
+                    </header>
+            
+                    <div class="user_topics--CARDSCONTAINER">
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+        <!-- <section class="user_topics--SECTION">
+            <input type="hidden" name="currentUser_random3Topics" value="Sports" id="currentUser_random3Topics">
+            <div class="user_topics--CONTENT">
+                <header class="user_topics--HEADER">
+                    <h2 class="xlarge__FONTSIZE">Your Topics</h2>
+                </header>
+        
+                <div class="user_topics--CARDSCONTAINER">
+                    <article class="user_topic--CARD">
+                        <div class="user_topic--CARDCONTENT">
+                            <header class="user_topic--CARDHEADER">
+                                <a href="/">
+                                    <h3 class="large__FONTSIZE">Science</h3>
+                                </a>
+                            </header>
+                            <div class="user_topic_news--CONTAINER">
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title
+                                                </h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="user_topic--CARD">
+                        <div class="user_topic--CARDCONTENT">
+                            <header class="user_topic--CARDHEADER">
+                                <a href="/">
+                                    <h3 class="large__FONTSIZE">Science</h3>
+                                </a>
+                            </header>
+                            <div class="user_topic_news--CONTAINER">
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title
+                                                </h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="user_topic--CARD">
+                        <div class="user_topic--CARDCONTENT">
+                            <header class="user_topic--CARDHEADER">
+                                <a href="/">
+                                    <h3 class="large__FONTSIZE">Science</h3>
+                                </a>
+                            </header>
+                            <div class="user_topic_news--CONTAINER">
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="news--CARD">
+                                    <a href="/" class="news_card--CONTENT">
+                                        <div class="news_card_infos--CONTAINER">
+                                            <div class="news_card--LEFTSIDE">
+                                                <div class="article_aditional_infos--CONTAINER">
+                                                    <div class="news_card_sincePublishmentTime--BLOCK">
+                                                        <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                            <img src="{% static 'globalNews/assets/icons/clock.png' %}"
+                                                                alt="news relese time">
+                                                        </span>
+                                                        <span class="news_card_sincePublishmentTime--EL small__FONTSIZE">1 Day</span>
+                                                    </div>
+                    
+                                                    <span class="small__FONTSIZE news_article_source--EL">BBC</span>
+                                                </div>
+                                                <h4 class="mid__FONTSIZE"> title title title title title title title title title title</h4>
+                                            </div>
+                    
+                                            <figure class="news_image--CONTAINER">
+                                                <img src="https://www.brookings.edu/wp-content/uploads/2023/02/02152023_shutterstock_1582129606.jpg?w=285"
+                                                    alt="article's thumbnail is not available.">
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section> -->
+    </div>
+{% endblock %}

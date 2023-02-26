@@ -1,0 +1,148 @@
+{% extends "globalNews/layout.html" %}
+{% load static %}
+
+{% load split %}
+{% load searchForExistence %}
+
+{% block title %}Global News -- My Library{% endblock %}
+
+{% block body %}
+
+<div class="myLibrary--BLOCK">
+    <div class="myLibrary--CONTENT">
+        <header class="myLibrary--HEADER">
+            <h2 class="xlarge__FONTSIZE">Your Topics</h2>
+            <div class="followed_topics--BLOCK">
+                {% if followed_topics|length %}
+                    <div class="followed_topics--LIST-CONTAINER">
+                        <ul class="followed_topics--LIST">
+                            {% for followed_topic in followed_topics %}
+                                <li>
+                                    <a class="mid__FONTSIZE followed_topic--LINK" href="{% url 'following' %}?topic={{followed_topic.topic}}">{{followed_topic.topic}}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+
+        <hr>
+
+        <section class="followed_topic_newsArticles--SECTION">
+            <div class="followed_topic_newsArticles--CONTENT">
+                {% if selectedTopic_newsArticles and selectedTopic_newsArticles|length %}
+                    <div class="followed_topic_newsArticles--BLOCK">
+                        <div class="followed_topic_newsArticles--CONTAINER">
+                            {% for selectedTopic_newsArticle in selectedTopic_newsArticles %}
+                                {% with selectedTopic_newsArticle.title|split:" - "|slice:"-1"|join:" " as article_title %}
+                                    <article class="news_article--CARD">
+                                        <a target="_blank" href="{{selectedTopic_newsArticle.url}}">
+                                            <div class="news_article--CONTENT">
+                                                <div class="news_article_typos--CONTAINER">
+                                                    <h3 class="mid-large__FONTSIZE">
+                                                        {% if article_title %}
+                                                            {{article_title}}
+                                                        {% else %}
+                                                            {{selectedTopic_newsArticle.title}}
+                                                        {% endif %}
+                                                    </h3>
+                                                </div>
+                                    
+                                                <figure class="news_article_img--FIGURE">
+                                                    {% if selectedTopic_newsArticle.urlToImage %}
+                                                        <img src="{{ selectedTopic_newsArticle.urlToImage }}" alt="{{selectedTopic_newsArticle.title}}">
+                                                    {% else %}
+                                                        <img src="{% static 'globalNews/assets/background/default_news_thumbnail 2.png' %}"
+                                                            alt="search result article's thumbnail is not available ">
+                                                    {% endif %}
+                                                    <figcaption hidden>{{selectedTopic_newsArticle.title}}</figcaption>
+                                                </figure>
+                                            </div>
+                                        </a>
+                                        <div class="news_article_card--FOOTER">
+                                            <div class="news_article_card_secondary_infos--CONTAINER">
+                                                <span
+                                                    class="news_article_sincePublish--EL mid__FONTSIZE">{{selectedTopic_newsArticle.sincePublishTime}}</span>
+                                                <span class="mid__FONTSIZE"> -- </span>
+                                                <span class="news_article_source--EL mid__FONTSIZE">{{selectedTopic_newsArticle.source.name}}</span>
+                                            </div>
+                                    
+                                            <div class="news_article--CTAs">
+                                                <form action="{% url 'saveNewsArticle' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="title" value="{{selectedTopic_newsArticle.title}}">
+                                                    <input type="hidden" name="description" value="{{selectedTopic_newsArticle.description}}">
+                                                    <input type="hidden" name="articleUrl" value="{{selectedTopic_newsArticle.url}}">
+                                                    <input type="hidden" name="thumbnail" value="{{selectedTopic_newsArticle.urlToImage}}">
+                                                    <input type="hidden" name="PublishmentDate" value="{{selectedTopic_newsArticle.publishedAt}}">
+                                                    <input type="hidden" name="source" value="{{selectedTopic_newsArticle.source.name}}">
+                                    
+                                                    {% with "title="|add:selectedTopic_newsArticle.title|default:''|add:"&source="|add:selectedTopic_newsArticle.source.name|default:''|add:"&type=articleExistence" as articleIsSaved %}
+                                                        <div data-saved="{% if savedArticles|searchForExistence:articleIsSaved %}true{%else%}false{%endif%}" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                            <button class="bookmark_news_article--BTN news_article_cta--BTN">
+                                                                <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                                <img class="saved_news_article--IMG"
+                                                                    src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}" alt="unsaved news article">
+                                                            </button>
+                                                            <span class="news_article_cta_hover--BANNER small__FONTSIZE">
+                                                                {% if savedArticles|searchForExistence:articleIsSaved %}remove from savelist{%else%}save for later{%endif%}
+                                                            </span>
+                                                        </div>
+                                                    {% endwith %}
+                                                </form>
+                                    
+                                                <div class="share_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                    <input type="hidden" name="articleSource" value="{{selectedTopic_newsArticle.source.name}}">
+                                                    <input type="hidden" name="articleTitle" value="{{selectedTopic_newsArticle.title}}">
+                                                    <input type="hidden" name="articleUrl" value="{{selectedTopic_newsArticle.url}}">
+
+                                                    <button type="submit" class="share_news_article--BTN news_article_cta--BTN">
+                                                        <img src="{% static 'globalNews/assets/icons/share.png' %}" alt="share news article">
+                                                    </button>
+                                                    <span class="news_article_cta_hover--BANNER small__FONTSIZE">share</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                {% endwith %}
+                            {% endfor %}
+                        </div>
+
+                        <footer class="followed_topic_newsArticles--FOOTER">
+                            <center>
+                                <a class="mid__FONTSIZE" href="{% url 'search' %}?q={{selected_topic}}">View more '{{selected_topic}}' news articles</a>
+                            </center>
+                        </footer>
+                    </div>
+                {% else %}
+                    {% if followed_topics|length %}
+                        <div class="no_selected_countries--BLOCK">
+                            <div class="no_selected_countries--CONTENT">
+                                <div class="no_selected_countries_img--CONTAINER">
+                                    <img src="{% static 'globalNews/assets/icons/default_no_followed_topics.webp' %}"
+                                        alt="no selected countries">
+                                </div>
+                                <span class="no_selected_countries--TYPO mid__FONTSIZE">select a topic you're following to view news articles of that topic.</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="no_selected_countries--BLOCK">
+                            <div class="no_selected_countries--CONTENT">
+                                <div class="no_selected_countries_img--CONTAINER">
+                                    <img src="{% static 'globalNews/assets/icons/default_no_followed_topics.webp' %}"
+                                        alt="no selected countries">
+                                </div>
+                                <span class="no_selected_countries--TYPO mid__FONTSIZE">you're not following any topic ,try search for topics that interest you and follow them.</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

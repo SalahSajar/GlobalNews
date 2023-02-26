@@ -1,0 +1,198 @@
+{% extends "globalNews/layout.html" %}
+{% load static %}
+
+{% load times %}
+{% load split %}
+{% load searchForExistence %}
+
+{% block title %} Global News - Search{% endblock %}
+
+{% block body %}
+    <div class="search_results--BLOCK">
+        <aside class="search_topic--BLOCK">
+            <div class="search_topic--CONTENT">
+                <header class="search_topic--HEADER">
+                    <h2 class="large__FONTSIZE">{{ results__OBJ.query }}</h2>
+                    <span class="mid__FONTSIZE">Topic</span>
+                </header>
+
+                {% if request.user.is_authenticated and results__OBJ.totalPages %}
+                    <div class="search_topic--CTAs">
+                        <div class="search_topic_ctas--CONTAINER">
+                            <form class="follow_topic--FORM" action="{% url 'followTopic' results__OBJ.query %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ results__OBJ.query }}" name="topic_title">
+                                {% with "topic="|add:results__OBJ.query|default:''|add:"&type=topicExistence" as topic_query %}
+                                    <button data-followed="{% if currentUser_followed_topics|searchForExistence:topic_query %}true{%else%}false{%endif%}" class="follow_topic--BTN search_topic_cta--BTN">
+                                        <div class="search_topic_cta--CONTENT follow_topic_cta--CONTENT">
+                                            <div class="search_topic_cta_img--CONTAINER">
+                                                <img src="{% static 'globalNews/assets/icons/empty-star[ BLUE ].png' %}" alt="share news topic">
+                                            </div>
+                                            <span class="mid__FONTSIZE follow_cta--TYPO">follow</span>
+                                        </div>
+
+                                        <div class="search_topic_cta--CONTENT unfollow_topic_cta--CONTENT">
+                                            <div class="search_topic_cta_img--CONTAINER">
+                                                <img src="{% static 'globalNews/assets/icons/filled-star[ BLUE ].png' %}" alt="share news topic">
+                                            </div>
+                                            <span class="mid__FONTSIZE follow_cta--TYPO">unfollow</span>
+                                        </div>
+                                    </button>
+                                {% endwith%}
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </aside>
+
+
+        <div class="news_articles--BLOCK">
+            <div class="news_articles--CONTAINER">
+                {% if results__OBJ.articles %}
+                    {% for search_result_article in results__OBJ.articles %}
+                        {% with search_result_article.title|split:" - "|slice:"-1"|join:" " as article_title %}
+                            <article class="news_article--CARD">
+                                <a target="_blank" href="{{search_result_article.url}}">
+                                    <div class="news_article--CONTENT">
+                                        <div class="news_article_typos--CONTAINER">
+                                            <h3 class="mid-large__FONTSIZE">
+                                                {% if article_title %}
+                                                    {{ article_title }}
+                                                {% else %}
+                                                    {{ search_result_article.title }}
+                                                {% endif %}
+                                            </h3>
+                                        </div>
+                            
+                                        <figure class="news_article_img--FIGURE">
+                                            {% if search_result_article.urlToImage %}
+                                                <img src="{{search_result_article.urlToImage}}"
+                                                alt="{{ search_result_article.title }}">
+                                            {% else %}
+                                                <img src="{% static 'globalNews/assets/background/default_news_thumbnail 2.png' %}"
+                                                alt="search result article's thumbnail is not available ">
+                                            {% endif %}
+                            
+                                            <figcaption hidden>{{ search_result_article.title }}</figcaption>
+                                        </figure>
+                                    </div>
+                                </a>
+
+                                <div class="news_article_card--FOOTER">
+                                    <div class="news_article_card_secondary_infos--CONTAINER">
+                                        <span class="news_article_sincePublish--EL mid__FONTSIZE">{{ search_result_article.sincePublishTime }}</span>
+                                        <span class="mid__FONTSIZE"> -- </span>
+                                        <span class="news_article_source--EL mid__FONTSIZE">{{ search_result_article.source.name }}</span>
+                                    </div>
+                                
+                                    {% if request.user.is_authenticated %}
+                                        <div class="news_article--CTAs">
+                                            <form action="{% url 'saveNewsArticle' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="title" value="{{ search_result_article.title }}">
+                                                <input type="hidden" name="description" value="{{ search_result_article.description }}">
+                                                <input type="hidden" name="articleUrl" value="{{ search_result_article.url }}">
+                                                <input type="hidden" name="thumbnail" value="{{ search_result_article.urlToImage }}">
+                                                <input type="hidden" name="PublishmentDate" value="{{ search_result_article.publishedAt }}">
+                                                <input type="hidden" name="source" value="{{ search_result_article.source.name }}">
+                                        
+                                                {% with "title="|add:search_result_article.title|default:''|add:"&source="|add:search_result_article.source.name|default:''|add:"&type=articleExistence" as article_query %}
+                                                    {% if currentUser_saved_articles|searchForExistence:article_query %}
+                                                        <div data-saved="true" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                            <button class="bookmark_news_article--BTN news_article_cta--BTN">
+                                                                <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                                <img class="saved_news_article--IMG" src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                            </button>
+                                                            <span class="news_article_cta_hover--BANNER small__FONTSIZE">remove from save list</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div data-saved="false" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                            <button class="bookmark_news_article--BTN news_article_cta--BTN">
+                                                                <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                                <img class="saved_news_article--IMG" src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                            </button>
+                                                            <span class="news_article_cta_hover--BANNER small__FONTSIZE">save for later</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </form>
+                                        
+                                            <div class="share_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                <input type="hidden" name="articleSource" value="{{search_result_article.source.name}}">
+                                                <input type="hidden" name="articleTitle" value="{{search_result_article.title}}">
+                                                <input type="hidden" name="articleUrl" value="{{search_result_article.url}}">
+
+                                                <button type="submit" class="share_news_article--BTN news_article_cta--BTN">
+                                                    <img src="{% static 'globalNews/assets/icons/share.png' %}" alt="share news article">
+                                                </button>
+                                                <span class="news_article_cta_hover--BANNER small__FONTSIZE">share</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </article>
+                        {% endwith %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {% if results__OBJ.message %}
+                <div class="articles_error--BLOCK">
+                    <center>
+                        <h3 class="mid__FONTSIZE">{{ results__OBJ.message }}</h3>
+                    </center>
+                </div>
+            {% endif %}
+            
+            {% if results__OBJ.totalPages > 0 and not results__OBJ.message %}
+                {% if results__OBJ.articles|length %}
+                    <div class="articles_panigation--BLOCK">
+                        <div class="articles_panigation--CONTENT">
+                            <ul class="articles_pages--LIST">
+                                {% if results__OBJ.currentPage|add:'-1' >= 1 %}
+                                    <li>
+                                        <a class="panigation_page--LINK small-mid__FONTSIZE"
+                                            href="{% url 'search' %}?q={{ results__OBJ.query }}&page={{ results__OBJ.currentPage|add:'-1' }}">prev</a>
+                                    </li>
+                                {% endif %}
+                    
+                                {% for idx in results__OBJ.totalPages|times %}
+                                    {% with idx|add:"1" as page_index %}
+                                        <li>
+                                            {% if page_index == results__OBJ.currentPage %}
+                                                <a disabled="true" class="panigation_page--LINK small-mid__FONTSIZE"
+                                                    href="{% url 'search' %}?q={{ results__OBJ.query }}&page={{ page_index }}">{{ page_index }}</a>
+                                            {% else %}
+                                                <a disabled="false" class="panigation_page--LINK small-mid__FONTSIZE"
+                                                    href="{% url 'search' %}?q={{ results__OBJ.query }}&page={{ page_index }}">{{ page_index }}</a>
+                                            {% endif %}
+                                        </li>
+                                    {% endwith %}
+                                {% endfor %}
+                    
+                                {% if results__OBJ.currentPage|add:'1' <= results__OBJ.totalPages %} <li>
+                                    <a class="panigation_page--LINK small-mid__FONTSIZE"
+                                        href="{% url 'search' %}?q={{ results__OBJ.query }}&page={{ results__OBJ.currentPage|add:'1' }}">next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="noArticlesFound--BLOCK">
+                        <div class="noArticlesFound--CONTENT">
+                            <h3 class="mid-large__FONTSIZE">This page is empty.</h3>
+                            <a href="{% url 'search' %}?q={{results__OBJ.query}}">Back to First page</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

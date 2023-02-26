@@ -1,0 +1,111 @@
+{% extends "globalNews/layout.html" %}
+{% load static %}
+
+{% load split %}
+
+{% block title %}WorldNews -- Saved News Articles{% endblock %}
+
+{% block body %}
+
+<div class="user_account--BLOCK">
+    <div class="user_account--CONTENT">
+
+        <header class="user_account--HEADER">
+            <h2 class="xlarge__FONTSIZE">Your Saved News Articles:</h2>
+            {% if savedArticles|length %}
+                <span class="mid__FONTSIZE user_saved_articles_length--EL">you have {{savedArticles|length}} saved articles</span>
+            {% endif %}
+        </header>
+
+        <hr>
+
+        <section class="saved_news_articles--BLOCK">
+            <div class="saved_news_articles--CONTENT">
+
+                <div class="unsaveArticle_error--BLOCK">
+                    <span class="mid__FONTSIZE">this news article is already unsaved</span>
+                </div>
+
+                <div class="saved_news_articles--CONTAINER">
+                    {% for savedArticle in savedArticles %}
+                        {% with savedArticle.title|split:" - "|slice:"-1"|join:" " as savedArticle_title %}
+                            <article class="news--CARD">
+                                <a class="news_card--CONTENT" target="_blank" href="{{savedArticle.articleUrl}}">
+                                    <div class="news_card_infos--CONTAINER">
+                                        <div class="news_card--LEFTSIDE">
+                                            <div class="news_card_eyebrow--BLOCK">
+                                                <div class="news_card_sincePublishmentTime--BLOCK">
+                                                    <span class="news_card_sincePublishmentTime--WRAPPER">
+                                                        <img src="{% static 'globalNews/assets/icons/clock.png' %}" alt="news relese time">
+                                                    </span>
+                                                    <span class="news_card_sincePublishmentTime--EL mid__FONTSIZE">{{ savedArticle.sincePublishTime }}</span>
+                                                </div>
+                                                <span class="mid__FONTSIZE news_article_source--EL">{{savedArticle.source}}</span>
+                                            </div>
+                                            <h3 class="mid-large__FONTSIZE">
+                                                {% if savedArticle_title %}
+                                                    {{savedArticle_title}}
+                                                {% else %}
+                                                    {{savedArticle.title}}
+                                                {% endif %}
+                                            </h3>
+                                        </div>
+                            
+                                        <figure class="news_article_img--FIGURE">
+                                            {% if savedArticle.thumbnailUrl %}
+                                                <img src="{{savedArticle.thumbnailUrl}}" alt="{{ savedArticle.title }}">
+                                            {% else %}
+                                                <img src="{% static 'globalNews/assets/background/default_news_thumbnail 2.png' %}"
+                                                    alt="search result article's thumbnail is not available ">
+                                            {% endif %}
+                                        
+                                            <figcaption hidden>{{ savedArticle.title }}</figcaption>
+                                        </figure>
+                                    </div>
+                                </a>
+                                <div class="news_article--CTAs">
+                                    <form action="{% url 'unsaveNewsArticle' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="title" value="{{ savedArticle.title }}">
+                                        <input type="hidden" name="source" value="{{ savedArticle.source }}">
+                                
+                                        <div data-saved="true" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                            <button class="bookmark_news_article--BTN news_article_cta--BTN">
+                                                <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
+                                                    alt="unsaved news article">
+                                                <img class="saved_news_article--IMG" src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}"
+                                                    alt="unsaved news article">
+                                            </button>
+                                            <span class="news_article_cta_hover--BANNER small__FONTSIZE">remove from save list</span>
+                                        </div>
+                                    </form>
+                                
+                                    <div class="share_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                        <input type="hidden" name="articleSource" value="{{savedArticle.source}}">
+                                        <input type="hidden" name="articleTitle" value="{{savedArticle.title}}">
+                                        <input type="hidden" name="articleUrl" value="{{savedArticle.articleUrl}}">
+                                        
+                                        <button type="submit" class="share_news_article--BTN news_article_cta--BTN">
+                                            <img src="{% static 'globalNews/assets/icons/share.png' %}" alt="share news article">
+                                        </button>
+                                        <span class="news_article_cta_hover--BANNER small__FONTSIZE">share</span>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endwith %}
+                    {% empty %}
+                        <div class="empty_savedArticles_list--BLOCK">
+                            <center>
+                                <span class="mid-large__FONTSIZE">you have no saved news articles.</span>
+                            </center>
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}

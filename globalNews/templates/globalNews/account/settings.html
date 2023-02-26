@@ -1,0 +1,87 @@
+{% extends "globalNews/layout.html" %}
+{% load static %}
+{% load split %}
+
+{% block title %}WorldNews -- Account Settings{% endblock %}
+
+{% block body %}
+
+<div class="user_account--BLOCK">
+    <div class="user_account--CONTENT">
+
+        <header class="user_account--HEADER">
+            <h2 class="xlarge__FONTSIZE">Settings</h2>
+        </header>
+
+        <hr>
+
+        <section class="user_account_settings--BLOCK">
+            <div class="user_account_settings--CONTENT">
+                <form class="user_account_settings--FORM" method="post" action="{% url 'settings' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if message %}
+                        <div class="form_submit_state--BLOCK success--BLOCK">
+                            <span class="mid__FONTSIZE">{{message}}</span>
+                        </div>
+                    {% endif %}
+                        
+                    {% if error %}
+                        <div class="form_submit_state--BLOCK error--BLOCK">
+                            <span class="mid__FONTSIZE">{{error}}</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="user_account_settings_form--FIELD">
+                        <label class="large__FONTSIZE" for="avatar">avatar</label>
+                        <div class="user_current_avatar_pic--CONTAINER">
+                            {% if request.user.profile_pic %}
+                                <img src="data:image/jpeg;base64,{{ request.user.profile_pic }}">
+                            {% else %}
+                                <img src="{% static 'globalNews/assets/icons/default_user_profile_pic [ BIG ].png' %}" alt="default user profile picture">
+                            {% endif %}
+                        </div>
+                        <input class="mid__FONTSIZE" type="file" accept="image/*" name="avatar" id="avatar">
+                    </div>
+                    <div class="user_account_settings_form--FIELD">
+                        <label class="mid-large__FONTSIZE" for="email">email</label>
+                        <input class="mid__FONTSIZE" type="email" name="email" id="email" value="{{request.user.email}}">
+                    </div>
+                    <div class="user_account_settings_form--FIELD">
+                        <label class="mid-large__FONTSIZE" for="username">username</label>
+                        <input class="mid__FONTSIZE" type="text" name="username" id="username" value="{{request.user.username}}">
+                    </div>
+
+                    <button type="button" class="change_user_password--BTN mid__FONTSIZE">change password</button>
+
+                    <div data-expanded="false" class="change_user_password_fields--CONTAINER">
+                        <div class="user_account_settings_form--FIELD">
+                            <label class="mid-large__FONTSIZE" for="oldPassword">old Password</label>
+                            <input class="mid__FONTSIZE" type="password" name="oldPassword" id="oldPassword">
+                        </div>
+                        
+                        <div class="user_account_settings_form--FIELD">
+                            <label class="mid-large__FONTSIZE" for="newPassword">new Password</label>
+                            <input class="mid__FONTSIZE" type="password" name="newPassword" id="newPassword">
+                        </div>
+                        
+                        <div class="user_account_settings_form--FIELD">
+                            <label class="mid-large__FONTSIZE" for="confirmPassword">confirm Password</label>
+                            <input class="mid__FONTSIZE" type="password" name="confirmPassword" id="confirmPassword">
+                        </div>
+                    </div>
+
+                    <div class="user_account_settings_form--CTAs">
+                        <button type="submit" class="user_account_settings_form_submit--BTN mid__FONTSIZE">save</button>
+                        
+                        <a href="/" class="delete_account--BTN mid__FONTSIZE">delete account</a>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}
