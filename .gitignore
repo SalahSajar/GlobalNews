@@ -1,2 +1,7 @@
 #virtualenv
-# .env
+
+# capstone/.env
+# globalNews/.env
+
+# /capstone/.env
+# /globalNews/.env
