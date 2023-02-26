@@ -29,7 +29,9 @@
                                                 {{ newsArticle.title }}
                                             {% endif %}
                                         </h2>
-                                        <p class="{% if forloop.counter0 == 0 %} mid__FONTSIZE {% else %} small-mid__FONTSIZE {% endif %}">{{newsArticle.description|truncatechars:120}}</p>
+                                        {% if newsArticle.description %}
+                                            <p class="{% if forloop.counter0 == 0 %} mid__FONTSIZE {% else %} small-mid__FONTSIZE {% endif %}">{{newsArticle.description|truncatechars:120}}</p>
+                                        {% endif %}
                                         <div class="news_card--FOOTER">
                                             <div class="news_card_releaseTime--BLOCK">
                                                 <span class="news_card_releaseTime_icon--WRAPPER">

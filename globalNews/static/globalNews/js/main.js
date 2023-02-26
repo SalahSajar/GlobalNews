@@ -460,7 +460,7 @@ const displayFollowedTopic_NewsArticles_Block__HANDLER = (topicResults__OBJ) => 
                                                 sincePublishmentTime_icon__CONTAINER.appendChild(sincePublishmentTime__ICON);
                                             // ------------------------------------------------------------
                                             const article_sincePublishmentTime__EL = document.createElement("span");
-                                            article_sincePublishmentTime__EL.className = "news_card_sincePublishmentTime--EL small__FONTSIZE";
+                                            article_sincePublishmentTime__EL.className = "news_card_sincePublishmentTime--EL small-mid__FONTSIZE";
                                             article_sincePublishmentTime__EL.innerText = article.sincePubTime;
 
                                             followedTopic_article_sincePublishmentTime__BLOCK.appendChild(sincePublishmentTime_icon__CONTAINER)
@@ -468,7 +468,7 @@ const displayFollowedTopic_NewsArticles_Block__HANDLER = (topicResults__OBJ) => 
                                         // ----------------------------------------------------------------
                                         // followed topic source -- ELEMENT
                                             const leftside_card_source__EL = document.createElement("span")
-                                            leftside_card_source__EL.className="small__FONTSIZE news_article_source--EL";
+                                            leftside_card_source__EL.className="small-mid__FONTSIZE news_article_source--EL";
 
                                             leftside_card_source__EL.innerText = article_source;
                                         // ----------------------------------------------------------------

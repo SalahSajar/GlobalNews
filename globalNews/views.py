@@ -162,7 +162,8 @@ def index(req):
     def get_character_info(topic):
         if topic == "general":
             res = requests.get(
-                f"https://newsapi.org/v2/top-headlines?country=us&apiKey={NEWSAPI_ORG__APIKEY}&language=en&pageSize=7")
+                f"https://newsapi.org/v2/top-headlines?country=us&apiKey={NEWSAPI_ORG__APIKEY}&pageSize=7")
+
             return {
                 "topic": "general",
                 "results": res.json()
