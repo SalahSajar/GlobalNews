@@ -60,7 +60,7 @@ GlobalNews uses 3 different External APIs to extract different news articles and
 
 ```
 1- First of all let's clone the repository:
-https://github.com/me50/SalahSajar.git
+git clone https://github.com/me50/SalahSajar.git
 
 2- Install necessary python packages
 pip install -r requirements.txt
