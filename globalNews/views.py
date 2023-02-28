@@ -30,6 +30,7 @@ env = environ.Env()
 
 environ.Env.read_env()
 
+MEDIASTACK__APIKEY = env("MEDIASTACK__APIKEY")
 NEWSAPI_ORG__APIKEY = env("NEWSAPI_ORG__APIKEY")
 THENEWSAPI__APIKEY = env("THENEWSAPI__APIKEY")
 RAPIDAPI__KEY = env("RAPIDAPI__KEY")
@@ -88,9 +89,15 @@ def fetch_articles__HANDLER(params, baseUrl, query, page, type):
     except ValueError:
         currentPage = 1
 
-    params["page"] = currentPage
+    if type == "topic_search":
+        params["offset"] = currentPage * 20
 
-    res = requests.get(baseUrl, params=params)
+        res = requests.get(baseUrl, params=params)
+
+    else:
+        params["page"] = currentPage
+
+        res = requests.get(baseUrl, params=params)
 
     articles = None
     data = None
@@ -99,32 +106,62 @@ def fetch_articles__HANDLER(params, baseUrl, query, page, type):
         totalPages = 0
         data = res.json()
 
-        if len(data["articles"]):
-            for article in data["articles"]:
-                article["sincePublishTime"] = article_timeSincePublish__HANDLER(
-                    article["publishedAt"])
-            articles = data["articles"]
+        if type == "topic_search":
+            if len(data["data"]):
+                for article in data["data"]:
+                    article["published_at"] = article["published_at"][:(
+                        len(article["published_at"])-6)]
 
-        if data["totalResults"] > 100:
-            totalPages = 5
-        else:
-            totalPages = math.ceil(data["totalResults"]/20)
+                    article["sincePublishTime"] = article_timeSincePublish__HANDLER(
+                        article["published_at"])
 
-        if data["status"] == "error":
-            return {
-                "message": "Something Is not right, Please be nice and don't try anything weird.",
-                "articles": articles,
-                "query": query,
-                "totalPages": 0,
-                "currentPage": 0
-            }
+                articles = data["data"]
+                if data["pagination"]["total"] > 100:
+                    totalPages = 5
+                else:
+                    totalPages = math.ceil(data["pagination"]["total"]/20)
+
+                return {
+                    "articles": articles,
+                    "query": query,
+                    "totalPages": totalPages,
+                    "currentPage": currentPage
+                }
+            else:
+                return {
+                    "message": "News articles not found, ",
+                    "articles": articles,
+                    "query": query,
+                    "totalPages": 0,
+                    "currentPage": 0
+                }
         else:
-            return {
-                "articles": articles,
-                "query": query,
-                "totalPages": totalPages,
-                "currentPage": currentPage
-            }
+            if len(data["articles"]):
+                for article in data["articles"]:
+                    article["sincePublishTime"] = article_timeSincePublish__HANDLER(
+                        article["publishedAt"])
+                articles = data["articles"]
+
+            if data["totalResults"] > 100:
+                totalPages = 5
+            else:
+                totalPages = math.ceil(data["totalResults"]/20)
+
+            if data["status"] == "error":
+                return {
+                    "message": "Something Is not right, Please be nice and don't try anything weird.",
+                    "articles": articles,
+                    "query": query,
+                    "totalPages": 0,
+                    "currentPage": 0
+                }
+            else:
+                return {
+                    "articles": articles,
+                    "query": query,
+                    "totalPages": totalPages,
+                    "currentPage": currentPage
+                }
 
     return {
         "message": "Something is went wrong, Please try again later.",
@@ -160,8 +197,16 @@ def index(req):
 
     def get_character_info(topic):
         if topic == "general":
+            # original top headlines endpoint
+            # res = requests.get(
+            #     f"https://newsapi.org/v2/top-headlines?country=us&apiKey={NEWSAPI_ORG__APIKEY}&pageSize=7")
+            # ----------------------------------------------------------------------
+
+            # using everything endpoint as alternative
+            lastDaysDate = date.today() - timedelta(days=1)
             res = requests.get(
-                f"https://newsapi.org/v2/top-headlines?country=us&apiKey={NEWSAPI_ORG__APIKEY}&pageSize=7")
+                f"https://newsapi.org/v2/everything?q=a&apiKey={NEWSAPI_ORG__APIKEY}&pageSize=7&sortBy=popularity&from={lastDaysDate}")
+            # ----------------------------------------------------------------------
 
             return {
                 "topic": "general",
@@ -295,18 +340,41 @@ def topic_view(req, topic):
     if not topic:
         return HttpResponseRedirect(reverse("index"))
 
+    # Original news articles topic
+    # requestParams = {
+    #     "apiKey": NEWSAPI_ORG__APIKEY,
+    #     "pageSize": 20,
+    #     "category": topic,
+    #     "country": "us"
+    # }
+
+    # if topic == "world":
+    #     requestParams["category"] = "general"
+
+    # results__OBJ = fetch_articles__HANDLER(
+    #     requestParams, "https://newsapi.org/v2/top-headlines", topic, page_param, "topic_search")
+    # ----------------------------------------------------------------------------------------------------
+
+    # Alternative news articles topic Solution
+    todayDate = date.today()
+    lastDaysDate = date.today() - timedelta(days=1)
+
     requestParams = {
-        "apiKey": NEWSAPI_ORG__APIKEY,
-        "pageSize": 20,
-        "category": topic,
-        "country": "us"
+        "access_key": MEDIASTACK__APIKEY,
+        "categories": topic,
+        "countries": "us",
+        "date": f"{lastDaysDate},{todayDate}",
+        "languages": "en",
+        "limit": 20,
+        "sort": "popularity"
     }
 
     if topic == "world":
-        requestParams["category"] = "general"
+        requestParams["categories"] = "general"
 
     results__OBJ = fetch_articles__HANDLER(
-        requestParams, "https://newsapi.org/v2/top-headlines", topic, page_param, "topic_search")
+        requestParams, "http://api.mediastack.com/v1/news", topic, page_param, "topic_search")
+    # ----------------------------------------------------------------------------------------------------
 
     if req.user.is_authenticated:
         currentUser = User.objects.get(
