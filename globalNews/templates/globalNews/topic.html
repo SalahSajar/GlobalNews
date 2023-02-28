@@ -20,89 +20,91 @@
             {% if results__OBJ.articles %}
                 {% for topicArticle in results__OBJ.articles %}
                     {% with topicArticle.title|split:" - "|slice:"-1"|join:" " as article_title %}
-                        <article class="news_article--CARD">
-                            <a target="_blank" href="{{topicArticle.url}}">
-                                <div class="news_article--CONTENT">
-                                    <div class="news_article_typos--CONTAINER">
-                                        <h3 class="mid-large__FONTSIZE">
-                                            {% if article_title %}
-                                                {{ article_title }}
-                                            {% else %}
-                                                {{ topicArticle.title }}
-                                            {% endif %}
-                                        </h3>
-                                    </div>
-                        
-                                    <figure class="news_article_img--FIGURE">
-                                        {% if topicArticle.urlToImage %}
-                                            <img src="{{topicArticle.urlToImage}}" alt="{{ topicArticle.title }}">
-                                        {% else %}
-                                            <img src="{% static 'globalNews/assets/background/default_news_thumbnail 2.png' %}"
-                                                alt="search result article's thumbnail is not available ">
-                                        {% endif %}
-                        
-                                        <figcaption hidden>{{ topicArticle.title }}</figcaption>
-                                    </figure>
-                                </div>
-                            </a>
-                        
-                            <div class="news_article_card--FOOTER">
-                                <div class="news_article_card_secondary_infos--CONTAINER">
-                                    <span class="news_article_sincePublish--EL mid__FONTSIZE">{{ topicArticle.sincePublishTime }}</span>
-                                    <span class="mid__FONTSIZE"> -- </span>
-                                    <span class="news_article_source--EL mid__FONTSIZE">{{ topicArticle.source.name }}</span>
-                                </div>
-                        
-                                {% if request.user.is_authenticated %}
-                                    <div class="news_article--CTAs">
-                                        <form action="{% url 'saveNewsArticle' %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="title" value="{{ topicArticle.title }}">
-                                            <input type="hidden" name="description" value="{{ topicArticle.description }}">
-                                            <input type="hidden" name="articleUrl" value="{{ topicArticle.url }}">
-                                            <input type="hidden" name="thumbnail" value="{{ topicArticle.urlToImage }}">
-                                            <input type="hidden" name="PublishmentDate" value="{{ topicArticle.publishedAt }}">
-                                            <input type="hidden" name="source" value="{{ topicArticle.source.name }}">
-
-                                            {% with "title="|add:topicArticle.title|default:''|add:"&source="|add:topicArticle.source.name|default:''|add:"&type=articleExistence" as article_query %}
-                                                {% if currentUser_saved_articles|searchForExistence:article_query %}
-                                                    <div data-saved="true" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
-                                                        <button class="bookmark_news_article--BTN news_article_cta--BTN">
-                                                            <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
-                                                                alt="unsaved news article">
-                                                            <img class="saved_news_article--IMG" src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}"
-                                                                alt="unsaved news article">
-                                                        </button>
-                                                        <span class="news_article_cta_hover--BANNER small__FONTSIZE">remove from save list</span>
-                                                    </div>
+                        {% with topicArticle.source|split:" | "|first as article_source %}
+                            <article class="news_article--CARD">
+                                <a target="_blank" href="{{topicArticle.url}}">
+                                    <div class="news_article--CONTENT">
+                                        <div class="news_article_typos--CONTAINER">
+                                            <h3 class="mid-large__FONTSIZE">
+                                                {% if article_title %}
+                                                    {{ article_title }}
                                                 {% else %}
-                                                    <div data-saved="false" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
-                                                        <button class="bookmark_news_article--BTN news_article_cta--BTN">
-                                                            <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
-                                                                alt="unsaved news article">
-                                                            <img class="saved_news_article--IMG" src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}"
-                                                                alt="unsaved news article">
-                                                        </button>
-                                                        <span class="news_article_cta_hover--BANNER small__FONTSIZE">save for later</span>
-                                                    </div>
+                                                    {{ topicArticle.title }}
                                                 {% endif %}
-                                            {% endwith %}
-                                        </form>
-                            
-                                        <div class="share_news_article_btn--BLOCK news_article_btn--BLOCK">
-                                            <input type="hidden" name="articleSource" value="{{topicArticle.source.name}}">
-                                            <input type="hidden" name="articleTitle" value="{{topicArticle.title}}">
-                                            <input type="hidden" name="articleUrl" value="{{topicArticle.url}}">
-
-                                            <button type="submit" class="share_news_article--BTN news_article_cta--BTN">
-                                                <img src="{% static 'globalNews/assets/icons/share.png' %}" alt="share news article">
-                                            </button>
-                                            <span class="news_article_cta_hover--BANNER small__FONTSIZE">share</span>
+                                            </h3>
                                         </div>
+                            
+                                        <figure class="news_article_img--FIGURE">
+                                            {% if topicArticle.image %}
+                                                <img src="{{topicArticle.image}}" alt="{{ topicArticle.title }}">
+                                            {% else %}
+                                                <img src="{% static 'globalNews/assets/background/default_news_thumbnail 2.png' %}"
+                                                    alt="search result article's thumbnail is not available ">
+                                            {% endif %}
+                            
+                                            <figcaption hidden>{{ topicArticle.title }}</figcaption>
+                                        </figure>
                                     </div>
-                                {% endif %}
-                            </div>
-                        </article>
+                                </a>
+                            
+                                <div class="news_article_card--FOOTER">
+                                    <div class="news_article_card_secondary_infos--CONTAINER">
+                                        <span class="news_article_sincePublish--EL mid__FONTSIZE">{{ topicArticle.sincePublishTime }}</span>
+                                        <span class="mid__FONTSIZE"> -- </span>
+                                        <span class="news_article_source--EL mid__FONTSIZE">{{ article_source }}</span>
+                                    </div>
+                            
+                                    {% if request.user.is_authenticated %}
+                                        <div class="news_article--CTAs">
+                                            <form action="{% url 'saveNewsArticle' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="title" value="{{ topicArticle.title }}">
+                                                <input type="hidden" name="description" value="{{ topicArticle.description }}">
+                                                <input type="hidden" name="articleUrl" value="{{ topicArticle.url }}">
+                                                <input type="hidden" name="thumbnail" value="{{ topicArticle.image }}">
+                                                <input type="hidden" name="PublishmentDate" value="{{ topicArticle.published_at }}">
+                                                <input type="hidden" name="source" value="{{ article_source }}">
+
+                                                {% with "title="|add:topicArticle.title|default:''|add:"&source="|add:article_source|default:''|add:"&type=articleExistence" as article_query %}
+                                                    {% if currentUser_saved_articles|searchForExistence:article_query %}
+                                                        <div data-saved="true" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                            <button class="bookmark_news_article--BTN news_article_cta--BTN">
+                                                                <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                                <img class="saved_news_article--IMG" src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                            </button>
+                                                            <span class="news_article_cta_hover--BANNER small__FONTSIZE">remove from save list</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div data-saved="false" class="bookmark_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                            <button class="bookmark_news_article--BTN news_article_cta--BTN">
+                                                                <img class="unsaved_news_article--IMG" src="{% static 'globalNews/assets/icons/bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                                <img class="saved_news_article--IMG" src="{% static 'globalNews/assets/icons/filled_bookmark.png' %}"
+                                                                    alt="unsaved news article">
+                                                            </button>
+                                                            <span class="news_article_cta_hover--BANNER small__FONTSIZE">save for later</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </form>
+                                
+                                            <div class="share_news_article_btn--BLOCK news_article_btn--BLOCK">
+                                                <input type="hidden" name="articleSource" value="{{article_source}}">
+                                                <input type="hidden" name="articleTitle" value="{{topicArticle.title}}">
+                                                <input type="hidden" name="articleUrl" value="{{topicArticle.url}}">
+
+                                                <button type="submit" class="share_news_article--BTN news_article_cta--BTN">
+                                                    <img src="{% static 'globalNews/assets/icons/share.png' %}" alt="share news article">
+                                                </button>
+                                                <span class="news_article_cta_hover--BANNER small__FONTSIZE">share</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </article>
+                        {% endwith %}
                     {% endwith %}
                 {% endfor %}
             {% endif %}
