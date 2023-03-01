@@ -25,7 +25,7 @@ SECRET_KEY = DJANGO__SECRETKEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.ercel.app']
+ALLOWED_HOSTS = ['.vercel.app']
 
 # Application definition
 
