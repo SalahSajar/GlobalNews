@@ -61,10 +61,6 @@ const share_links__BLOCK = document.querySelector(".share_links--BLOCK");
     
     // Close article share block
     close_shareArticle__BTN?.addEventListener("click", ()=>shareArticleOverlay__BLOCK.dataset.visible = false)
-    
-    // share article on social media -- EVENT LISTENERS
-    
-    ////////////////////////////////////////////////////////////////////////////
 })()
 
 
@@ -132,10 +128,12 @@ const loadAvailableCountries__HANDLER = (countries_search_result) => {
         .then(res => res.json())
         .then(data => {
             const countries = data.filter(country => country.toLowerCase().includes(countries_search_result.toLowerCase()));
+
             
             if(countries.length){
                 search_country__BLOCK.setAttribute("aria-expanded", true)
-                
+                let country_selection_El__HEIGHT = 0;
+
                 countries.forEach(country => {
                     const country_selection__EL = document.createElement("span");
                     
@@ -143,7 +141,15 @@ const loadAvailableCountries__HANDLER = (countries_search_result) => {
                     country_selection__EL.innerText = country;
     
                     countries__CONTAINER.appendChild(country_selection__EL);
+
+                    country_selection_El__HEIGHT = country_selection__EL.offsetHeight;
                 });
+
+                if(countries.length > 10){
+                    countries__CONTAINER.style.height = `${country_selection_El__HEIGHT * 10}px`
+                } else {
+                    countries__CONTAINER.style.height = "auto";
+                }
             } else {
                 search_country__BLOCK.setAttribute("aria-expanded", false)
             }
