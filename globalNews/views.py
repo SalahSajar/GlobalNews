@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
-from django.core.files.images import get_image_dimensions
+# from django.core.files.images import get_image_dimensions
 from django.db import IntegrityError
 
 import environ
@@ -340,22 +340,6 @@ def topic_view(req, topic):
     if not topic:
         return HttpResponseRedirect(reverse("index"))
 
-    # Original news articles topic
-    # requestParams = {
-    #     "apiKey": NEWSAPI_ORG__APIKEY,
-    #     "pageSize": 20,
-    #     "category": topic,
-    #     "country": "us"
-    # }
-
-    # if topic == "world":
-    #     requestParams["category"] = "general"
-
-    # results__OBJ = fetch_articles__HANDLER(
-    #     requestParams, "https://newsapi.org/v2/top-headlines", topic, page_param, "topic_search")
-    # ----------------------------------------------------------------------------------------------------
-
-    # Alternative news articles topic Solution
     todayDate = date.today()
     lastDaysDate = date.today() - timedelta(days=1)
 
@@ -374,7 +358,6 @@ def topic_view(req, topic):
 
     results__OBJ = fetch_articles__HANDLER(
         requestParams, "http://api.mediastack.com/v1/news", topic, page_param, "topic_search")
-    # ----------------------------------------------------------------------------------------------------
 
     if req.user.is_authenticated:
         currentUser = User.objects.get(
@@ -501,7 +484,6 @@ def settings_view(req):
             max_size = (1024*1024)*3
             user_avatar = req.FILES["avatar"]
 
-            w, h = get_image_dimensions(user_avatar)
             user_avatar_size = user_avatar.size
 
             if user_avatar_size > max_size:
