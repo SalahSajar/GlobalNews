@@ -17,8 +17,8 @@ DJANGO__SECRETKEY = env("DJANGO__SECRETKEY")
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = DJANGO__SECRETKEY
