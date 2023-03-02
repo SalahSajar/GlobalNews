@@ -215,6 +215,7 @@ def index(req):
         }
 
         r = requests.get(f'{base_url}', querystring, headers=headers)
+
         return {
             "topic": topic,
             "results": r.json()
@@ -225,27 +226,39 @@ def index(req):
             get_character_info, topic) for topic in topics}
 
         for future in concurrent.futures.as_completed(future_to_url):
-            try:
-                data = future.result()
-                if data["topic"] == "general":
+            data = future.result()
+            if data["topic"] == "general":
+                try:
                     trendingArticles = None
 
                     if data["results"]["totalResults"] > 0 and len(data["results"]["articles"]) > 0:
                         for article in data["results"]["articles"]:
+
+                            if "+" in article["publishedAt"]:
+                                article["publishedAt"] = article["publishedAt"][:(
+                                    len(article["publishedAt"])-6)]
+
+                            if '.' in article["publishedAt"]:
+                                article["publishedAt"] = article["publishedAt"].split(
+                                    ".")[0]
+
                             article["sincePublishTime"] = article_timeSincePublish__HANDLER(
                                 article["publishedAt"])
+
                         trendingArticles = data["results"]["articles"]
 
                     news_articles_by_category["general"] = trendingArticles
-                else:
+                except Exception as err:
+                    print(f"Something is wrong: {err}")
+            else:
+                try:
                     for article in data["results"]["results"]:
                         article["sincePublishTime"] = article_timeSincePublish__HANDLER(
                             article["pubDate"])
 
                     news_articles_by_category["categories"].append(data)
-
-            except Exception as e:
-                print('Looks like something went wrong:', e)
+                except Exception as err:
+                    print(f"Something is wrong: {err}")
 
     if req.user.is_authenticated:
         currentUser = User.objects.get(
