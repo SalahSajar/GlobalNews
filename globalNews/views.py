@@ -198,14 +198,8 @@ def index(req):
     def get_character_info(topic):
         if topic == "general":
             # original top headlines endpoint
-            # res = requests.get(
-            #     f"https://newsapi.org/v2/top-headlines?country=us&apiKey={NEWSAPI_ORG__APIKEY}&pageSize=7")
-            # ----------------------------------------------------------------------
-
-            # using everything endpoint as alternative
-            lastDaysDate = date.today() - timedelta(days=1)
             res = requests.get(
-                f"https://newsapi.org/v2/everything?q=a&apiKey={NEWSAPI_ORG__APIKEY}&pageSize=7&sortBy=popularity&from={lastDaysDate}")
+                f"https://newsapi.org/v2/top-headlines?sources=bbc-news,abc-news,associated-press,bloomberg,business-insider,cbs-news,cnn,espn,fox-news,reuters,the-washington-post,vice-news,wired&apiKey={NEWSAPI_ORG__APIKEY}&pageSize=7")
             # ----------------------------------------------------------------------
 
             return {
