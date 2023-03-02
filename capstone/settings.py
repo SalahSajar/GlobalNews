@@ -17,8 +17,7 @@ DJANGO__SECRETKEY = env("DJANGO__SECRETKEY")
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATICFILES_DIRS = os.path.join(BASE_DIR, 'globalNews/static'),
-STATIC_ROOT = os.path.join(
-    BASE_DIR, 'staticfiles_build', 'globalNews/static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'globalNews/static')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = DJANGO__SECRETKEY
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.Middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -139,3 +139,8 @@ STATICFILES = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "globalNews/static/globalNews/assets")
+
+if os.environ.GET("VERCEL"):
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
