@@ -12,6 +12,9 @@ env = environ.Env()
 environ.Env.read_env()
 
 DJANGO__SECRETKEY = env("DJANGO__SECRETKEY")
+POSTGRES_DATABASE__HOST = env("POSTGRES_DATABASE__HOST")
+POSTGRES_DATABASE__NAME_USER = env("POSTGRES_DATABASE__NAME_USER")
+POSTGRES_DATABASE__PASSWORD = env("POSTGRES_DATABASE__PASSWORD")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,11 +85,23 @@ WSGI_APPLICATION = 'capstone.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    'default': {
+        'ENGINE': "django.db.backends.postgresql_psycopg2",
+        'HOST': POSTGRES_DATABASE__HOST,
+        'NAME': POSTGRES_DATABASE__NAME_USER,
+        'USER': POSTGRES_DATABASE__NAME_USER,
+        'PASSWORD': POSTGRES_DATABASE__PASSWORD,
+        'PORT': "5432",
+
+    }
 }
 
 AUTH_USER_MODEL = "globalNews.User"
