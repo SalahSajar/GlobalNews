@@ -100,7 +100,6 @@ DATABASES = {
         'USER': POSTGRES_DATABASE__NAME_USER,
         'PASSWORD': POSTGRES_DATABASE__PASSWORD,
         'PORT': "5432",
-
     }
 }
 

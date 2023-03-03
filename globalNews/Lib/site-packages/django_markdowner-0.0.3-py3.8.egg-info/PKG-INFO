@@ -1,0 +1,59 @@
+Metadata-Version: 1.2
+Name: django-markdowner
+Version: 0.0.3
+Summary: Markdown to Template builder for Django.
+Home-page: https://github.com/LeCuay/django-markdowner
+Author: LeCuay
+Author-email: suso.becerra98@gmail.com
+License: MIT License
+Project-URL: Source Code, https://github.com/LeCuay/django-markdowner
+Description: =================
+        Django Markdowner
+        =================
+        
+        .. image:: https://img.shields.io/badge/python-3.6+-green.svg?
+            :target: https://www.python.org/
+        
+        .. image:: https://img.shields.io/pypi/l/django-markdowner.svg
+            :target: https://github.com/LeCuay/django-markdowner/blob/master/LICENSE
+        
+        .. image:: https://img.shields.io/pypi/v/django-markdowner.svg
+            :target: https://pypi.python.org/pypi/django-markdowner/
+            :alt: Latest PyPI version
+        
+        .. image:: https://travis-ci.com/LeCuay/django-markdowner.svg?branch=master
+            :target: https://travis-ci.com/LeCuay/django-markdowner
+            :alt: Build Status
+        
+        Django Markdowner allows you to parse Markdown files into Django Templates.
+        
+        Requirements
+        ============
+        
+        Django Markdowner requires Django 1.11 or Django 2+.
+        
+        Getting It
+        ==========
+        
+        You can get Django Markdowner by using pip::
+            $ pip install django-markdowner
+        
+Platform: any
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 1.11
+Classifier: Framework :: Django :: 2.1
+Classifier: Framework :: Django :: 2.2
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Utilities
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
