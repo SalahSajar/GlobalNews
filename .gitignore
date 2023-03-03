@@ -6,6 +6,9 @@
 # /capstone/.env
 # /globalNews/.env
 
+globalNews/migrations
+globalNews/Include
+
 # Django #
 *.log
 *.pot
