@@ -9,6 +9,7 @@
 /globalNews/migrations
 /globalNews/Include
 /globalNews/Scripts
+/globalNews/Lib/site-packages/*
 
 # Django #
 *.log
