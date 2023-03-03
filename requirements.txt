@@ -3,7 +3,7 @@ backports.zoneinfo==0.2.1
 beautifulsoup4==4.9.3
 bs4==0.0.1
 certifi==2022.12.7
-charset-normalizer==3.0.1
+# charset-normalizer==3.0.1
 Django==4.1.7
 django-environ==0.10.0
 django-markdowner==0.0.3
