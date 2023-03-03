@@ -12,6 +12,7 @@
 /globalNews/Lib
 /globalNews/__pycache__
 /globalNews/migrations
+/globalNews/static
 
 # Django #
 *.log
