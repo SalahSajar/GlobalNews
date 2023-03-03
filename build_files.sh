@@ -1,5 +1,5 @@
 echo "BUILD START"
 pip install -r requirements.txt
 python manage.py collectstatic --no-input
-pip install --upgrade setuptools
+pip install psycopg2-binary
 echo "BUILD END"
